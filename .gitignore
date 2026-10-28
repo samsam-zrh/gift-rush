@@ -1,0 +1,9 @@
+.DS_Store
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+.env
+.env.*
+build/
+assets/
