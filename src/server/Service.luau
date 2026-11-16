@@ -209,7 +209,7 @@ Data.profileLoaded:Connect(function(profile,p)
  end)
 end)
 Players.PlayerRemoving:Connect(function(p)
- local s=state(p);if s then s.lastSeen=os.time() end
+ local s=state(p);if s then Rewards.RecordSeen(s,os.time()) end
  profiles[p]=nil;limits[p]=nil
  if lobby then lobby.players[p]=nil end
  if round then round.players[p]=nil end
@@ -258,7 +258,7 @@ task.spawn(function()
   if lobby and os.clock()>=lobby.at then beginRound() end
   if round and os.clock()>=round.ends then stopRound() end
   for p,profile in profiles do
-   profile.giftRush.lastSeen=os.time()
+   Rewards.RecordSeen(profile.giftRush,os.time())
    if round and round.players[p] then local h=p.Character and p.Character:FindFirstChildOfClass('Humanoid');if h then h.WalkSpeed=20;h.JumpPower=50 end end
    push(p)
   end

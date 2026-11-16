@@ -12,9 +12,12 @@ Rewards.Calendar = {
 function Rewards.New()
  return {version=2,visits=0,lastClaimDay=-1,lastSeen=0,reduced=false,returnGifts=0,opened=0,wins=0,bestRace=0,album={},stage=1,starterPet=false,milestones={}}
 end
+function Rewards.RecordSeen(state,now)
+ state.lastSeen=math.max(state.lastSeen or 0,now)
+end
 function Rewards.Join(state,now)
  if state.lastSeen>0 and now-state.lastSeen>172800 then state.reduced=true state.returnGifts=0 end
- state.lastSeen=now
+ Rewards.RecordSeen(state,now)
 end
 function Rewards.Day(state) return state.visits%7+1 end
 function Rewards.CanClaim(state,now) return math.floor(now/86400)>state.lastClaimDay end
