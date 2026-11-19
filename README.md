@@ -19,9 +19,10 @@ Avec [Lune](https://github.com/lune-org/lune) installé, depuis la racine :
 
 ```sh
 lune run tests/rewards.spec.luau
+lune run tests/service.spec.luau
 ```
 
-Les 13 vérifications des récompenses passent. Les courses, le multijoueur et les sauvegardes restent à revalider dans Studio.
+Je teste les récompenses et les appels serveur de la boutique et des compagnons avec une base simulée. Les courses, le multijoueur et les sauvegardes restent à revalider dans Studio.
 
 ## Crédits
 

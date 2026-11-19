@@ -24,6 +24,18 @@ Charger `GiftRushService` depuis le serveur, une fois les modules de la base ini
 
 Le guide attend l’interface native `PlayerGui.UI`. Le service utilise `ServerStorage.pets`, `workspace.gifts`, les zones de vente et boutique de `workspace.areas.area1`, le spawn et `workspace.stores.backpack.models`. Les positions de la course sont définies dans `Service.luau` : les adapter si la carte change.
 
+## Appels serveur de la boutique et des compagnons
+
+Dans `ReplicatedStorage.shared.network`, conserver chaque fonction lors de son enregistrement dans `createRemoteFunction`, à côté de l’affectation existante de `OnServerInvoke` :
+
+```luau
+event.OnServerInvoke = callback
+network.callbacks = network.callbacks or {}
+network.callbacks[name] = callback
+```
+
+Le service réutilise ainsi `petManager`, `buyBackpack` et `equipBackpack` avec leurs contrôles serveur. `OnServerInvoke` ne se relit pas. Garder cette table côté serveur, sans remote permettant de choisir librement une fonction à appeler. Initialiser ces trois fonctions avant de charger Gift Rush. Sans ces raccords, l’amélioration du sac reste indisponible et le compagnon reçu doit être équipé depuis le menu natif.
+
 ## Vérifier
 
-Tester dans Studio : ouverture → vente → achat du sac, compagnon de départ, calendrier, collection, course seul puis à deux joueurs. Vérifier aussi les profils pleins, départs en course et sauvegardes. Les tests Lune couvrent seulement la logique des récompenses, pas ces interactions moteur.
+Tester dans Studio : ouverture → vente → achat du sac, compagnon de départ, calendrier, collection, course seul puis à deux joueurs. Vérifier aussi les profils pleins, départs en course et sauvegardes. Les tests Lune couvrent les récompenses et les appels du service avec une base simulée. Le parcours en jeu reste à vérifier dans Studio.

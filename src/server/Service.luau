@@ -68,9 +68,9 @@ grantPet=function(p,modelName)
  local display=m:GetAttribute('DisplayName')
  table.insert(profile.player_pets.owned,{name=display,displayName=display,image=m:GetAttribute('Image'),tier=m:GetAttribute('Tier'),identifier=id})
  profile.giftRush.album[modelName]=true
- local manager=RS.shared.events:FindFirstChild('petManager')
- if next(profile.player_pets.equipped)==nil and manager and manager.OnServerInvoke then
-  manager.OnServerInvoke(p,'equip',{name=display,id=id,slot=1})
+ local equip=network.callbacks and network.callbacks.petManager
+ if next(profile.player_pets.equipped)==nil and type(equip)=='function' then
+  equip(p,'equip',{name=display,id=id,slot=1})
  end
  network:fireClient('refreshPets',p)
  return true
@@ -104,14 +104,14 @@ function Service.Upgrade(p)
  for _,m in workspace.stores.backpack.models:GetChildren() do
   if m:GetAttribute('ActualObject')=='Backpack2' then item=m break end
  end
- local events=RS.shared.events
- if not item or not events:FindFirstChild('buyBackpack') or not events:FindFirstChild('equipBackpack') then return false,'Boutique en préparation.' end
+ local handlers=network.callbacks or {}
+ if not item or type(handlers.buyBackpack)~='function' or type(handlers.equipBackpack)~='function' then return false,'Boutique en préparation.' end
  local owned=table.find(profiles[p].owned_backpacks,'Backpack2')
  if not owned then
-  local ok=events.buyBackpack.OnServerInvoke(p,item)
+  local ok=handlers.buyBackpack(p,item)
   if not ok then return false,'Il te faut 80 pièces. Ouvre et vends une autre boîte.' end
  end
- events.equipBackpack.OnServerInvoke(p,item)
+ handlers.equipBackpack(p,item)
  completeIntro(p)
  return true,'Sac amélioré : 200 places !'
 end
