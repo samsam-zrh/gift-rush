@@ -22,7 +22,7 @@ lune run tests/rewards.spec.luau
 lune run tests/service.spec.luau
 ```
 
-Je teste les récompenses et les appels serveur de la boutique et des compagnons avec une base simulée. Les courses, le multijoueur et les sauvegardes restent à revalider dans Studio.
+Je teste les récompenses et les appels serveur de la boutique et des compagnons avec une base simulée. Dans une copie Studio, j’ai aussi vérifié le chargement du profil et le premier cadeau : 150 pièces, le compagnon dans l’album, puis refus d’une deuxième demande le même jour. Les courses, le multijoueur et les sauvegardes restent à revalider.
 
 ## Crédits
 
